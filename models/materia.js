@@ -8,7 +8,12 @@ var materiaEsquema = mongoose.Schema({
         required: true
     },
     prelacion:{
-        type: String
+        type: String,
+        required: false
+    },
+    creditosParaVer:{
+        type: Number,
+        required: false
     },
     T1:{
         type: Boolean,
