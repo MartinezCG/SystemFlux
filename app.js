@@ -2,20 +2,32 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+const config = require('./config/database');
 
 app.use(bodyParser.json());
+
+const port = 3000;
 
 Materia = require('./models/materia') 
 
 //conectar a mongoose
-mongoose.connect('mongodb://localhost/SystemFlux');
-var db = mongoose.connection;
-
-app.get('/', function(req,res){
-    res.send('Usar /api/materias');
+mongoose.connect(config.database, {
+    useMongoClient: true
 });
 
-app.get('/api/materias', function(req,res){
+mongoose.connection.on('connected', ()=>{
+    console.log('Conectado a la base de datos '+config.database);
+});
+
+mongoose.connection.on('error', (err)=>{
+    console.log('ERROR de base de datos '+err);
+});
+
+app.get('/', function(req,res){
+    res.send('Usar /materias');
+});
+
+app.get('/materias', function(req,res){
     Materia.getMaterias(function(err, materias){
         if(err){
             throw err;
@@ -24,7 +36,7 @@ app.get('/api/materias', function(req,res){
     });
 });
 
-app.post('/api/materias', function(req,res){
+app.post('/materias', function(req,res){
     var materia = req.body;
     Materia.addMateria(materia, function(err, materia){
         if(err){
@@ -34,7 +46,7 @@ app.post('/api/materias', function(req,res){
     });
 });
 
-app.put('/api/materias/:_id', function(req,res){
+app.put('/materias/:_id', function(req,res){
     var id = req.params._id;
     var materia = req.body;
     Materia.updateMateria(id, materia, {}, function(err, materia){
@@ -45,7 +57,7 @@ app.put('/api/materias/:_id', function(req,res){
     });
 });
 
-app.get('/api/materias/:_id', function(req,res){
+app.get('/materias/:_id', function(req,res){
     Materia.getMateriasById(req.params._id, function(err, materia){
         if(err){
             throw err;
@@ -54,5 +66,6 @@ app.get('/api/materias/:_id', function(req,res){
     });
 });
 
-app.listen(3000);
-console.log('conectado');
+app.listen(port,()=>{
+    console.log('conectado');
+});

@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+const config = require('../config/database');
 
 //esquema de materias
 var materiaEsquema = mongoose.Schema({
@@ -8,6 +9,18 @@ var materiaEsquema = mongoose.Schema({
     },
     prelacion:{
         type: String
+    },
+    T1:{
+        type: Boolean,
+        required: true
+    },
+    T2:{
+        type: Boolean,
+        required: true
+    },
+    T3:{
+        type: Boolean,
+        required: true
     }
 });
 
