@@ -7,7 +7,11 @@ var materiaEsquema = mongoose.Schema({
         type: String,
         required: true
     },
-    prelacion:{
+    prelacion1:{
+        type: String,
+        required: false
+    },
+    prelacion2:{
         type: String,
         required: false
     },
